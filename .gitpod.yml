@@ -1,3 +1,4 @@
+
 tasks:
   - init: pnpm install
     command: |
@@ -10,3 +11,7 @@ ports:
     onOpen: open-browser
 
 
+
+vscode:
+  extensions:
+    - svelte.svelte-vscode
