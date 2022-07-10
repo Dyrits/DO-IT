@@ -1,5 +1,5 @@
 {
-	"name": "full-stack-web-development",
+	"name": "do-it",
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "svelte-kit dev",

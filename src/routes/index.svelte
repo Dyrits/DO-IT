@@ -31,7 +31,7 @@
 
     export let todos: Todo[];
 
-    const title = "Let's do it!";
+    const title = "Do it!";
 </script>
 
 <style>
