@@ -1,7 +1,7 @@
-<div class="todo">
-    <form action="#" method="#">
-        <input type="hidden" name="done" value="#" />
-        <button aria-label="Mark done / to do~" class="toggle"></button>
+<div class="todo" class:done={todo.done}>
+    <form action="/todos/{todo.uid}.json?_method=PATCH" method="POST">
+        <input type="hidden" name="done" value="{!todo.done}" />
+        <button aria-label="Mark todo as {todo.done ? "to do" : "done"}" class="toggle"></button>
     </form>
     <form action="/todos/{todo.uid}.json?_method=PATCH" method="POST" class="text">
         <input type="text" value="{todo.text}" name="text" />
