@@ -22,7 +22,9 @@ export const api = async ({ locals, request, params }: RequestEvent) => {
             data = await request.formData();
             const todo = todos.find(todo => todo.uid === uid);
             // @ts-ignore
-            response = { ...response, body: (todo.text = data.get("text")?.toString()) };
+            if (data.has("text")) { response = { ...response, body: (todo.text = data.get("text")?.toString()) }; }
+             // @ts-ignore
+            if (data.has("done")) { response = { ...response, body: (todo.done = data.get("done") === "true") }; }
             break;
         case "DELETE":
             todos = todos.filter(todo => todo.uid !== uid);
