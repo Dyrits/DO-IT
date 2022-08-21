@@ -4,11 +4,11 @@
 
 <div id="todos">
     <h1>{ title }</h1>
-    <form action="/todos.json" method="POST" id="new">
+    <form action="/todos.json" method="post" id="new" use:enhance={{ result: addTodo }}>
         <input type="text" name="text" id="text" aria-label="Add a todo~" placeholder="[+] Type to add a something to do~" />
     </form>
     { #each todos as todo }
-        <TodoItem todo={todo} />
+        <TodoItem { todo } { deleteTodo } { updateTodoText } { updateTodoDone } />
     { /each }
 </div>
 
@@ -28,10 +28,32 @@
 
 <script lang="ts">
     import TodoItem from "$lib/todo-item.svelte";
+    import { enhance } from "$lib/actions/form";
 
     export let todos: Todo[];
 
     const title = "Do it!";
+
+    const addTodo = async (response: Response, form: HTMLFormElement) => {
+            const todo = await response.json();
+            todos = [...todos, todo];
+            form.reset();
+    };
+
+    const deleteTodo = async (response: Response) => {
+        todos = await response.json();
+    }
+
+    const updateTodoText = async (response: Response) => {
+        const { uid, text } = await response.json();
+        todos = todos.map(todo => uid === todo.uid ? { ...todo, text } : todo);
+    }
+
+    const updateTodoDone = async (response: Response) => {
+        const { uid, done } = await response.json();
+        todos = todos.map(todo => uid === todo.uid ? { ...todo, done } : todo);
+    }
+
 </script>
 
 <style>
@@ -60,3 +82,5 @@
 
     #todos :global(input:focus-visible) { border: 2px solid #8F8F8F; }
 </style>
+
+

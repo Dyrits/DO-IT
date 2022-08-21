@@ -1,19 +1,23 @@
 <div class="todo" class:done={todo.done}>
-    <form action="/todos/{todo.uid}.json?_method=PATCH" method="POST">
+    <form action="/todos/{todo.uid}.json?_method=PATCH" method="POST" use:enhance={{ result: updateTodoDone }}>
         <input type="hidden" name="done" value="{!todo.done}" />
         <button aria-label="Mark todo as {todo.done ? "to do" : "done"}" class="toggle"></button>
     </form>
-    <form action="/todos/{todo.uid}.json?_method=PATCH" method="POST" class="text">
+    <form action="/todos/{todo.uid}.json?_method=PATCH" method="POST" class="text" use:enhance={{ result: updateTodoText }}>
         <input type="text" value="{todo.text}" name="text" />
         <button aria-label="Save todo~" class="save"></button>
     </form>
-    <form action="/todos/{todo.uid}.json?_method=DELETE" method="POST">
+    <form action="/todos/{todo.uid}.json?_method=DELETE" method="POST" use:enhance={{ result: deleteTodo }}>
         <button aria-label="Delete todo~" class="delete"></button>
     </form>
 </div>
 
 <script lang="ts">
+    import { enhance } from "$lib/actions/form";
     export let todo: Todo;
+    export let deleteTodo: (response: Response) => void;
+    export let updateTodoText: (response: Response) => void;
+    export let updateTodoDone: (response: Response) => void;
 </script>
 
 <style>
