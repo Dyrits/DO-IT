@@ -45,8 +45,8 @@
     }
 
     const updateTodoText = async (response: Response) => {
-        const { uid, text } = await response.json();
-        todos = todos.map(todo => uid === todo.uid ? { ...todo, text } : todo);
+        let { uid, text } = await response.json();
+        todos = todos.map(todo => uid === todo.uid ? { ...todo, text: new String(text) as string } : todo);
     }
 
     const updateTodoDone = async (response: Response) => {
