@@ -13,7 +13,7 @@
 </div>
 
 <script lang="ts">
-    import { enhance } from "$lib/actions/form";
+    import { enhance } from "#lib/actions/form.ts";
     export let todo: Todo;
     export let deleteTodo: (response: Response) => void;
     export let updateTodoText: (response: Response) => void;

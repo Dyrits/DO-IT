@@ -7,30 +7,19 @@
     <form action="/todos.json" method="post" id="new" use:enhance={{ result: addTodo }}>
         <input type="text" name="text" id="text" aria-label="Add a todo~" placeholder="[+] Type to add a something to do~" />
     </form>
-    { #each todos as todo }
+    {#each todos as todo }
         <TodoItem { todo } { deleteTodo } { updateTodoText } { updateTodoDone } />
-    { /each }
+    {/each }
 </div>
 
-<script context="module" lang="ts">
-    import type { Load } from "@sveltejs/kit";
 
-    export const load: Load = async ({ fetch }) => {
-        const response = await fetch("/todos.json");
-        if (response.ok) { 
-            const todos = await response.json(); 
-            return { props: { todos },  }
-        }
-        const { message } = await response.json();
-        return { error: new Error(message) };
-    }
-</script>
 
 <script lang="ts">
-    import TodoItem from "$lib/todo-item.svelte";
-    import { enhance } from "$lib/actions/form";
+    import TodoItem from "#lib/todo-item.svelte";
+    import { enhance } from "#lib/actions/form.ts";
 
-    export let todos: Todo[];
+    export let data: { todos: Todo[] };
+    let todos: Todo[] = data.todos;
 
     const title = "Do it!";
 
@@ -46,7 +35,7 @@
 
     const updateTodoText = async (response: Response) => {
         let { uid, text } = await response.json();
-        todos = todos.map(todo => uid === todo.uid ? { ...todo, text: new String(text) as string } : todo);
+        todos = todos.map(todo => uid === todo.uid ? { ...todo, text: String(text) } : todo);
     }
 
     const updateTodoDone = async (response: Response) => {

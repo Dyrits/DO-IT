@@ -1,5 +1,4 @@
-// @ts-ignore
-export const enhance = (form: HTMLFormElement, { result }) => {
+export const enhance = (form: HTMLFormElement, { result }: { result: (response: Response, form: HTMLFormElement) => void | Promise<void> }) => {
 
     const submit = async ($event: Event) => {
         const { action, method } = form;
@@ -8,7 +7,7 @@ export const enhance = (form: HTMLFormElement, { result }) => {
         try {
             const response = await fetch(action, { method, body, headers: { accept: "application/json" } });
             if (response.status === 204) { console.info("There is no content to send for this request.")}
-            else if (response.ok) { result(response, form); } 
+            else if (response.ok) { await result(response, form); }
             else { console.error("Could not fetch the data: ", await response.text()); }
         } catch(error) {
             console.error("Could not submit the form: ", error);
@@ -18,6 +17,6 @@ export const enhance = (form: HTMLFormElement, { result }) => {
     form.addEventListener("submit", submit)
 
     return {
-        destoy() { form.removeEventListener("submit", submit); }
+        destroy() { form.removeEventListener("submit", submit); }
     }
 }
